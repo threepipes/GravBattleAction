@@ -10,11 +10,13 @@ public class ActJump extends Action{
 	}
 	
 	@Override
-	public void action() {
+	public boolean action() {
 
 		if(parent.isGround()){
 			parent.vy = -24;
+			return true;
 		}
+		return false;
 		
 	}
 }

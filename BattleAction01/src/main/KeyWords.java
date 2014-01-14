@@ -13,5 +13,7 @@ public class KeyWords {
 	public static final String LAND = "land";
 	public static final String DAMAGE = "damage";	
 	public static final String GUN = "gun";
+	public static final String FLOWERGUN = "flowergun";
+	public static final String CHANGEGRAV = "change_gravity";
 	
 }

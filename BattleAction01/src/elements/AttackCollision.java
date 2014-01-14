@@ -7,6 +7,7 @@ import scene.Map;
 
 public class AttackCollision extends Element{
 	protected boolean hit = false;
+	protected boolean attackOn = true;
 	
 	public AttackCollision(double x, double y, int sizex, int sizey, Map stage) {
 		super(x, y, sizex, sizey, stage);
@@ -22,9 +23,12 @@ public class AttackCollision extends Element{
 	}
 	
 	public boolean checkHit(Element ele){
-		boolean tmp = super.checkHit(ele);
-		if(tmp) hit = true;
-		return tmp;
+		if(attackOn){
+			boolean tmp = super.checkHit(ele);
+			if(tmp) hit = true;
+			return tmp;
+		}
+		return false;
 	}
 	
 	public void changeCollision(int colx, int coly, int colsizex, int colsizey){

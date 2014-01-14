@@ -10,16 +10,21 @@ public class ActStand extends Action{
 	}
 	
 	@Override
-	public void action() {
+	public boolean action() {
 
 		if(parent.vx > 0){
-			parent.vx -= parent.ax/2;
+			parent.vx -= 0.25;
 			if(parent.vx < 0) parent.vx = 0;
 		}
 		if(parent.vx < 0){
-			parent.vx += parent.ax/2;
+			parent.vx += 0.25;
 			if(parent.vx > 0) parent.vx = 0;
 		}
+		parent.ax = 0;
+//		parent.ax = -0.25*parent.dx;
+//		if(parent.vx == 0) parent.ax = 0;
+//		else if(Math.abs(parent.vx) < 1) parent.ax = -Math.abs(parent.vx);
+		return true;
 		
 	}
 }

@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class UseFile {
 	
@@ -88,9 +91,14 @@ public class UseFile {
 //	}
 	
 
-	public static int[][][] readFile(String filename){
+	public int[][][] readFile(String filename){
 		try {
-			FileInputStream reader = new FileInputStream(new File("data/"+filename));
+//			URL name1 = (getClass().getResource("/"+filename));
+//			URL name2 = (getClass().getResource(filename));
+//			if(name2 != null)System.out.println("name2:"+name2.getFile());
+//			if(name1 != null)System.out.println("name1:"+name1.toURI());
+//			FileInputStream reader = new FileInputStream(new File(getClass().getResource("/"+filename).toURI()));
+			InputStream reader = getClass().getResourceAsStream("/"+filename);
 			byte[] buf = new byte[4];
 			reader.read(buf);
 			int mapx = btoi(buf);

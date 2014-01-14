@@ -2,15 +2,13 @@ package elements;
 
 import java.util.ArrayList;
 
-import scene.Map;
-
 import main.KeyWords;
 
-public class ActGun extends Action{
+public class ActFlowerGun extends Action{
 	int maxnum;
-	public ActGun(int priority, ActiveElement parent, int num) {
+	public ActFlowerGun(int priority, ActiveElement parent, int num) {
 		super(priority, parent, null, null);
-		name = KeyWords.GUN;
+		name = KeyWords.FLOWERGUN;
 		this.maxnum = num;
 	}
 	
@@ -20,9 +18,10 @@ public class ActGun extends Action{
 			parent.attackCols = new ArrayList<AttackCollision>();
 		}
 		if(parent.attackCols.size() < maxnum){
-			parent.attackCols.add(new Bullet(parent.x+parent.sizex/2*parent.dx, parent.y+parent.sizey/2-8, 11, 3, parent.dx, 0, parent.stage));
+			parent.attackCols.add(new FlowerBullet(parent.x, parent.y+parent.sizey/2-8, 1, 1, parent.dx, 0, parent.stage));
 			return true;
 		}
 		return false;
+		
 	}
 }

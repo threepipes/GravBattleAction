@@ -11,11 +11,12 @@ public class ActLand extends ActionContinue{
 	}
 	
 	@Override
-	public void action() {
+	public boolean action() {
 		if(parent.vx != 0){
 			parent.vx -= parent.vx*0.1;
 			parent.vx = (int)parent.vx;
 		}
+		return true;
 	}
 
 }

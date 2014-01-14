@@ -1,5 +1,6 @@
 package scene;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -37,27 +38,33 @@ public class Map {
     
     protected int enemyID = 0;
     
-    protected Player player;
+    protected Player[] player = new Player[2];
     protected HashMap<String, Enemy> enemyList = new HashMap<String, Enemy>();
     
     protected List<Event> eventList = new ArrayList<Event>();
     public static final int BLOCK_SIZE = 32;
 	protected static final int SourceSizeX = 10;
 	protected static final int SourceSizeY = 10;
+	private static final boolean DEBUG = true;
     
     public Map(){
     }
     
-    public void init(String mapName, String eventName, Player player, int toX, int toY){
-    	int[][][] tmp = UseFile.readFile(mapName);
+    public void init(String mapName, String eventName, Player player, Player player2, int toX, int toY){
+    	int[][][] tmp = new UseFile().readFile(mapName);
     	map = tmp[0];
     	mapF = tmp[1];
     	mapSizeX = map[0].length;
     	mapSizeY = map.length;
     	loadEvent(eventName);
-    	this.player = player;
-    	player.changeMap(this);
-    	player.moveTo(toX, toY);
+    	this.player[0] = player;
+    	this.player[0].setStageSize(getSizeTile());
+    	this.player[0].changeMap(this);
+    	this.player[0].moveTo(toX, toY);
+    	this.player[1] = player2;
+    	this.player[1].setStageSize(getSizeTile());
+    	this.player[1].changeMap(this);
+//    	this.player[1].moveTo(toX+50, toY);
     	if(mapImage == null){
     		createCmap();
     		loadImage("MapChip.png", "background.png");
@@ -94,9 +101,9 @@ public class Map {
 		chipMap.put(18, 5);// 5:âEâ∫Ç™ÇËç‚è¨
 	}
     
-    public void setPlayer(Player player){
-    	this.player = player;
-    }
+//    public void setPlayer(Player player){
+//    	this.player = player;
+//    }
     
     public void loadEvent(String filename){
     	BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -170,18 +177,21 @@ public class Map {
     
     public void update(){
 
-		player.move();
-		Iterator<Enemy> it = enemyList.values().iterator();
-		while(it.hasNext()){
-			Enemy temp = it.next();
-			temp.walk();
-			temp.move();
-			if(player.checkHit(temp)) player.damage(1,player.getX()<=temp.getX());
-			if(player.checkFired(temp)){
-				temp.death();
-				it.remove();
-			}
-		}
+		player[0].move();
+		player[1].move();
+//		Iterator<Enemy> it = enemyList.values().iterator();
+//		while(it.hasNext()){
+//			Enemy temp = it.next();
+//			temp.walk();
+//			temp.move();
+//			if(player.checkHit(temp)) player.damage(1,player.getX()<=temp.getX());
+//			if(player.checkFired(temp)){
+//				temp.death();
+//				it.remove();
+//			}
+		if(player[0].checkFired(player[1])) player[1].damage(1, player[1].getX()<=player[0].getX());
+		if(player[1].checkFired(player[0])) player[0].damage(1, player[0].getX()<=player[1].getX());
+//		}
     }
     
     public boolean checkHitO(int x, int y, int sizeX, int sizeY){
@@ -317,18 +327,24 @@ public class Map {
     }
     
     public Event checkEvent(){
-    	Iterator<Event> it = eventList.iterator();
-    	while(it.hasNext()){
-    		Event e = it.next();
-    		if(e.checkHit(player)){
-    			if(e.getDelete()) it.remove();
-    			return e;
-    		}
-    	}
+//    	Iterator<Event> it = eventList.iterator();
+//    	while(it.hasNext()){
+//    		Event e = it.next();
+//    		if(e.checkHit(player)){
+//    			if(e.getDelete()) it.remove();
+//    			return e;
+//    		}
+//    	}
     	return null;
     }
     
-    public void draw(Graphics g, int offsetX, int offsetY, int offsetXbg, int offsetYbg){
+    public void draw(Graphics g, int offsetX, int offsetY, int offsetXbg, int offsetYbg, int num){
+    	Point po = player[num].getOffset();
+    	Point pobg = player[num].getOffsetBG();
+    	offsetX = po.x;
+    	offsetY = po.y;
+    	offsetXbg = pobg.x;
+    	offsetYbg = pobg.y;
     	int tileFirstX = offsetX/BLOCK_SIZE;
     	int tileFirstY = offsetY/BLOCK_SIZE;
     	int tileLastX = tileFirstX + MainPanel.Width/BLOCK_SIZE + 2;
@@ -351,16 +367,17 @@ public class Map {
 			}
 
     	// draw elements
-		Iterator<Event> ite = eventList.iterator();
-		while(ite.hasNext()){
-			ite.next().draw(g, offsetX, offsetY);
-		}
+//		Iterator<Event> ite = eventList.iterator();
+//		while(ite.hasNext()){
+//			ite.next().draw(g, offsetX, offsetY);
+//		}
 		Iterator<Enemy> it = enemyList.values().iterator();
 		while(it.hasNext()){
 			it.next().draw(g, offsetX, offsetY);
 		}
 		
-		player.draw(g, offsetX, offsetY);
+		player[0].draw(g, offsetX, offsetY);
+		player[1].draw(g, offsetX, offsetY);
 
 		for(int i=0; i<mapSizeY; i++)
 			for(int j=0; j<mapSizeX; j++){
@@ -371,5 +388,21 @@ public class Map {
 						cx*BLOCK_SIZE, cy*BLOCK_SIZE, (cx+1)*BLOCK_SIZE, (cy+1)*BLOCK_SIZE, null);
 				}
 			}
+		
+		player[num].drawUIs(g, 10, 10);
+		
+		g.setColor(Color.BLACK);
+		g.drawRect(0, 0, MainPanel.Width+11, MainPanel.Height+11);
+		
+
+		if(DEBUG){
+			g.setColor(Color.WHITE);
+			g.drawString("ox:"+offsetX+"; oy:"+offsetY+"; oxbg:"+offsetXbg+"; oybg:"+offsetYbg, 500, 20);
+			g.drawString("x:"+player[num].getX()+"; y:"+player[num].getY()+"; life:"+player[num].getLife(), 500, 40);
+			g.drawString("mapX:"+(int)player[num].getX()/BLOCK_SIZE+"; mapY:"+(int)player[num].getY()/BLOCK_SIZE+";", 500, 60);
+			g.drawString("onGround:"+player[num].isGround()+"; gravDir:"+player[num].getGravDir(), 500, 80);
+			g.drawString("act:"+player[num].Debug_Act+"; vx:"+player[num].getVX()+"; vy:"+player[num].getVY(), 500, 100);
+			g.drawString("ax:"+player[num].getAX()+"; ay:"+player[num].getAY(), 500, 120);
+		}
     }
 }

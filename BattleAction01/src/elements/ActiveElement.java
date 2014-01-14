@@ -19,11 +19,13 @@ public abstract class ActiveElement extends Element{
 	protected int dx = 1;
 	protected int dy = 0;
 	protected int life;
+	protected int maxlife;
 	
 	protected double oldVY;
 
 	protected boolean nodamage = false;
 	protected long stopTime;
+	protected boolean hitBlock = false;
 	
 	protected Image image = null;
 	protected int icount = 0;
@@ -37,8 +39,11 @@ public abstract class ActiveElement extends Element{
 	
 	public ActiveElement(double x, double y, int sizex, int sizey, Map stage) {
 		super(x, y, sizex, sizey, stage);
-		ax = 0.5;
+//		ax = 0.5;
+		ax = 0;
 		ay = 3;
+		maxlife = 10;
+		life = maxlife;
 	}
 	
 	public void loadImage(String filename){
@@ -63,6 +68,14 @@ public abstract class ActiveElement extends Element{
 		return vy;
 	}
 	
+	public double getAX(){
+		return ax;
+	}
+	
+	public double getAY(){
+		return ay;
+	}
+	
 	public boolean isGround(){
 		return onGround;
 	}
@@ -73,6 +86,12 @@ public abstract class ActiveElement extends Element{
 	
 	public void death(){
 		isAlive = false;
+	}
+	
+	public void changeGravityDirection(int dir){
+	}
+	public int getGravDir(){
+		return 0;
 	}
 	
 
@@ -89,15 +108,28 @@ public abstract class ActiveElement extends Element{
 		return false;
 	}
 	
+	
 	public void move(){
-
-		if(vy < 30) vy += ay;
+		if((ay > 0 && vy < 30)||(ay < 0 && vy > -30)) vy += ay;
+		if(Math.abs(vx) <= maxspeed){
+			vx += ax;
+			if(Math.abs(vx) > maxspeed) vx = maxspeed*dx;
+		}
+//		else if(vx != 0){
+//			int oldVX = (int)vx;
+//			vx += ax*dx;
+//			if(dx*vx < 0){
+//				vx = 0;
+////				ax = 0;
+//			}
+//		}
 		oldVY = vy;
 		
 		double newX = x + vx;
 		double newY = y + vy;
 
 		boolean oldGround = onGround;
+		hitBlock = false;
 		// check y after x
 		Point p = stage.checkHitBlock((int)newX, (int)y, sizex, sizey);
 		if(p == null || stage.checkHitO((int)newX, (int)y, sizex, sizey)){
@@ -112,6 +144,7 @@ public abstract class ActiveElement extends Element{
 				x = p.x+Map.BLOCK_SIZE;
 			}
 			vx = 0;
+			hitBlock = true;
 		}
 		p = stage.checkHitBlock((int)x, (int)newY, sizex, sizey);
 		if(p == null){
@@ -127,6 +160,7 @@ public abstract class ActiveElement extends Element{
 				y = p.y+Map.BLOCK_SIZE;
 				vy = 0;
 			}
+			hitBlock = true;
 		}
 		// check x only
 		

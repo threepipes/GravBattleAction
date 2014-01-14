@@ -10,7 +10,7 @@ public class ActDamage extends ActionContinue{
 	}
 	
 	@Override
-	public void action() {
+	public boolean action() {
 		if(parent.vx > 0){
 			parent.vx -= parent.ax/2;
 			if(parent.vx < 0) parent.vx = 0;
@@ -18,7 +18,9 @@ public class ActDamage extends ActionContinue{
 		if(parent.vx < 0){
 			parent.vx += parent.ax/2;
 			if(parent.vx > 0) parent.vx = 0;
-		}		
+		}
+//		parent.ax = -0.25;
+		return true;
 	}
 	
 }

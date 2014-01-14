@@ -68,6 +68,6 @@ public abstract class Action {
 		return false;
 	}
 	
-	public abstract void action();
+	public abstract boolean action();
 
 }

@@ -13,6 +13,6 @@ public abstract class Scene {
 	protected int actmask = 0;
 	
 	public abstract void update();
-	public abstract void keyCheck(int keymask);
+	public abstract void keyCheck(int[] keymask);
 	public abstract void draw(Graphics g);
 }

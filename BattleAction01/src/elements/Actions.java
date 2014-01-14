@@ -70,12 +70,15 @@ public class Actions {
 		}
 	}
 	
-	public void doAction(){
+	public String doAction(){
+		boolean tmp = false;
 		if(reserve != null){
-			reserve.action();
+			tmp = reserve.action();
 		}// 何もアクションがない場合はどうする？
 		if(reserve instanceof ActionContinue){
 			conFin = false;
 		}
+		if(tmp)return reserve.getName();
+		else return null;
 	}
 }

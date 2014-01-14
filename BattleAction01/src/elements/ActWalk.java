@@ -9,12 +9,14 @@ public class ActWalk  extends Action{
 	}
 	
 	@Override
-	public void action() {
+	public boolean action() {
 		// TODO 自動生成されたメソッド・スタブ
 
-		if(parent.dx == -1){
-			if(parent.vx > -parent.maxspeed) parent.vx -= parent.ax;
-		}else if(parent.vx < parent.maxspeed) parent.vx += parent.ax;
+//		if(parent.dx == -1){
+//			if(parent.vx > -parent.maxspeed) parent.vx -= parent.ax;
+//		}else if(parent.vx < parent.maxspeed) parent.vx += parent.ax;
+		parent.ax = 0.5*parent.dx;
+		return true;
 	}
 
 }
