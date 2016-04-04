@@ -5,7 +5,7 @@ import main.KeyWords;
 public class ActJump extends Action{
 	public ActJump(int priority, ActiveElement parent, int[][] mapr, int[][] mapl) {
 		super(priority, parent, mapr, mapl);
-		// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼ãƒ»ã‚¹ã‚¿ãƒ–
 		name = KeyWords.JUMP;
 	}
 	
@@ -13,7 +13,7 @@ public class ActJump extends Action{
 	public boolean action() {
 
 		if(parent.isGround()){
-			parent.vy = -24;
+			parent.vy = -20;
 			return true;
 		}
 		return false;

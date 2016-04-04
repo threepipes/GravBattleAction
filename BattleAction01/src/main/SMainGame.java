@@ -33,7 +33,7 @@ public class SMainGame extends Scene{
 	public final static int P4color = 180;
 	
 	public static final int MAP_NUM = 3;
-	private int mapNo = 1;
+	private int mapNo = 2;
 	private Map[] stage = new Map[MAP_NUM];	
 //	private MessageWindow messageW;
 //	private MessageController messageC;
@@ -92,7 +92,7 @@ public class SMainGame extends Scene{
 //				MapEvent me = (MapEvent)e;
 //				
 //				if(mapNo != me.toMap){
-//					// player‚ª•Ç‚Ì’†‚És‚­ŠëŒ¯‚ª‚ ‚é(—vF–³“Gˆ—)
+//					// playerãŒå£ã®ä¸­ã«è¡Œãå±é™ºãŒã‚ã‚‹(è¦ï¼šç„¡æ•µå‡¦ç†)
 //					player.clearAttackCols();
 //					stage[mapNo].destMap();
 //					mapNo = me.toMap;

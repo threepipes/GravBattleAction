@@ -86,19 +86,19 @@ public class Map {
 	
 	public void createCmap(){
 		for(int i=0; i<SourceSizeX*SourceSizeY; i++) chipMap.put(i, -1);
-		chipMap.put(-1,0);// 0:“–‚½‚è”»’è‚È‚µ
+		chipMap.put(-1,0);// 0:å½“ãŸã‚Šåˆ¤å®šãªã—
 		chipMap.put(0, 0);
 		chipMap.put(1, 0);
 		chipMap.put(2, 0);
 		chipMap.put(12, 0);
 		chipMap.put(22, 0);
-		chipMap.put(7, 1);// 1:‰Eã‚ª‚èâ¬
-		chipMap.put(8, 2);// 2:‰Eã‚ª‚èâ‘å
-		chipMap.put(5, 3);// 3:â‰º—p‘ä
+		chipMap.put(7, 1);// 1:å³ä¸ŠãŒã‚Šå‚å°
+		chipMap.put(8, 2);// 2:å³ä¸ŠãŒã‚Šå‚å¤§
+		chipMap.put(5, 3);// 3:å‚ä¸‹ç”¨å°
 		chipMap.put(27, 3);
 		chipMap.put(28, 3);
-		chipMap.put(17, 4);// 4:‰E‰º‚ª‚èâ‘å
-		chipMap.put(18, 5);// 5:‰E‰º‚ª‚èâ¬
+		chipMap.put(17, 4);// 4:å³ä¸‹ãŒã‚Šå‚å¤§
+		chipMap.put(18, 5);// 5:å³ä¸‹ãŒã‚Šå‚å°
 	}
     
 //    public void setPlayer(Player player){
@@ -156,10 +156,10 @@ public class Map {
 			}
 			
 		} catch (NumberFormatException e) {
-			// TODO Ž©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
+			// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸ catch ãƒ–ãƒ­ãƒƒã‚¯
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Ž©“®¶¬‚³‚ê‚½ catch ƒuƒƒbƒN
+			// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸ catch ãƒ–ãƒ­ãƒƒã‚¯
 			e.printStackTrace();
 		}
     }
@@ -400,9 +400,9 @@ public class Map {
 			g.drawString("ox:"+offsetX+"; oy:"+offsetY+"; oxbg:"+offsetXbg+"; oybg:"+offsetYbg, 500, 20);
 			g.drawString("x:"+player[num].getX()+"; y:"+player[num].getY()+"; life:"+player[num].getLife(), 500, 40);
 			g.drawString("mapX:"+(int)player[num].getX()/BLOCK_SIZE+"; mapY:"+(int)player[num].getY()/BLOCK_SIZE+";", 500, 60);
-			g.drawString("onGround:"+player[num].isGround()+"; gravDir:"+player[num].getGravDir(), 500, 80);
+			g.drawString("onGround:"+player[num].isGround()+"; gravDir:"+player[num].getGravDir()+"; ay*dy:"+player[num].dbgVYAY+";", 500, 80);
 			g.drawString("act:"+player[num].Debug_Act+"; vx:"+player[num].getVX()+"; vy:"+player[num].getVY(), 500, 100);
-			g.drawString("ax:"+player[num].getAX()+"; ay:"+player[num].getAY(), 500, 120);
+			g.drawString("dx:"+player[num].getDX()+"; dy:"+player[num].getDY()+"; ax:"+player[num].getAX()+"; ay:"+player[num].getAY(), 500, 120);
 		}
     }
 }

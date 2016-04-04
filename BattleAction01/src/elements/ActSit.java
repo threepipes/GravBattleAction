@@ -13,13 +13,14 @@ public class ActSit extends Action{
 	@Override
 	public boolean action() {
 		if(parent.onGround){
-			if(parent.vx != 0){
-				parent.vx -= parent.vx*0.1;
-				parent.vx = (int)parent.vx;
+//			if(parent.vx != 0){
+//				parent.vx -= parent.vx*0.1;
+//				parent.vx = (int)parent.vx;
+				parent.ax = -0.9;
 				parent.colys = size;
 				parent.coly = parent.sizey - size;
-				parent.ax = 0;
-			}
+//				parent.ax = 0;
+//			}
 			return true;
 		}
 		return false;

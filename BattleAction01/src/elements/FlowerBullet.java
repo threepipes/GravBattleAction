@@ -12,7 +12,7 @@ public class FlowerBullet extends AttackCollision{
 	private List<SubBullet> bullets = new ArrayList<SubBullet>();
 	private boolean explode = false;
 	public FlowerBullet(double x, double y, int sx, int sy, int dx, int dy, Map stage) {
-		super(x, y, sx, sy, stage);// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		super(x, y, sx, sy, stage);// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼ãƒ»ã‚¹ã‚¿ãƒ–
 		this.vx = dx*10;
 		this.vy = -13;
 		ay = 1;

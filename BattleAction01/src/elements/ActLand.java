@@ -5,17 +5,18 @@ import main.KeyWords;
 public class ActLand extends ActionContinue{
 	public ActLand(int priority, ActiveElement parent, int[][] mapr, int[][] mapl) {
 		super(priority, parent, mapr, mapl);
-		// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼ãƒ»ã‚¹ã‚¿ãƒ–
 		name = KeyWords.LAND;
-		// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼ãƒ»ã‚¹ã‚¿ãƒ–
 	}
 	
 	@Override
 	public boolean action() {
-		if(parent.vx != 0){
-			parent.vx -= parent.vx*0.1;
-			parent.vx = (int)parent.vx;
-		}
+//		if(parent.vx != 0){
+//			parent.vx -= parent.vx*0.1;
+//			parent.vx = (int)parent.vx;
+//		}
+		parent.ax = -0.9;
 		return true;
 	}
 

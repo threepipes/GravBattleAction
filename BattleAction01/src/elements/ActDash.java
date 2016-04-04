@@ -10,10 +10,11 @@ public class ActDash   extends Action{
 	
 	@Override
 	public boolean action() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸãƒ¡ã‚½ãƒƒãƒ‰ãƒ»ã‚¹ã‚¿ãƒ–
 
 //		if(parent.dx == -1){
-			parent.ax = 0.5*parent.dx;
+			parent.ax = 0.5;
+//			parent.ax = 0.5*parent.dx;
 //		}
 //		else if(parent.vx < parent.maxspeed) parent.vx += parent.ax;
 		return true;

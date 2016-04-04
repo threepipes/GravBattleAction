@@ -8,7 +8,7 @@ public class SubBullet extends AttackCollision{
 	double oldX;
 	double oldY;
 	public SubBullet(double x, double y, double dx, double dy, Map stage) {
-		super(x, y, 2, 2, stage);// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		super(x, y, 2, 2, stage);// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼ãƒ»ã‚¹ã‚¿ãƒ–
 		this.vx = dx*15;
 		this.vy = dy*10 - 8;
 		oldX = x;
@@ -18,7 +18,7 @@ public class SubBullet extends AttackCollision{
 	
 	@Override
 	public void move() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸãƒ¡ã‚½ãƒƒãƒ‰ãƒ»ã‚¹ã‚¿ãƒ–
 		if(vy+ay > 20) ay = 0;
 		oldX = x;
 		oldY = y;

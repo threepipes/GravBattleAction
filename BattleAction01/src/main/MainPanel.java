@@ -13,7 +13,7 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 //	private static final boolean DEBUG = true;
 	
 	public static final int Width = 800;
-	public static final int Height = 300;
+	public static final int Height = 370;
 	
 	private static final int KEY_RIGHT = 1;
 	private static final int KEY_LEFT = 2;
@@ -22,6 +22,8 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 	private static final int KEY_ATTACK = 16;
 	private static final int KEY_WEAPONRIGHT = 32;
 	private static final int KEY_WEAPONLEFT = 64;
+	private static final int KEY_CHGRAV = 128;
+	protected static final int KEY_JUMP = 256;
 	
 	
 	private static final int Player1_Left = KeyEvent.VK_LEFT;
@@ -31,6 +33,8 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 	private static final int Player1_ATTACK = KeyEvent.VK_V;
 	private static final int Player1_WEAPONRIGHT = KeyEvent.VK_N;
 	private static final int Player1_WEAPONLEFT = KeyEvent.VK_B;
+	private static final int Player1_CHGRAV = KeyEvent.VK_C;
+	private static final int Player1_JUMP = KeyEvent.VK_SPACE;
 	
 	private static final int Player2_LEFT = KeyEvent.VK_W;
 	private static final int Player2_RIGHT = KeyEvent.VK_R;
@@ -39,6 +43,8 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 	private static final int Player2_ATTACK = KeyEvent.VK_A;
 	private static final int Player2_WEAPONRIGHT = KeyEvent.VK_5;
 	private static final int Player2_WEAPONLEFT = KeyEvent.VK_4;
+	private static final int Player2_CHGRAV = KeyEvent.VK_T;
+	private static final int Player2_JUMP = KeyEvent.VK_6;
 
 	private int[] keymask= new int[2];
 	
@@ -61,7 +67,7 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 		setFocusable(true);
 		addKeyListener(this);
 		
-		// Thread�̊J�n�͈�ԍŌ�
+		// Threadの開始は一番最後
 		Thread anime = new Thread(this);
 		anime.start();
 	}
@@ -110,6 +116,12 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 		case Player1_WEAPONLEFT:
 			keymask[0]|= KEY_WEAPONLEFT;
 			break;
+		case Player1_CHGRAV:
+			keymask[0]|= KEY_CHGRAV;
+			break;
+		case Player1_JUMP:
+			keymask[0]|= KEY_JUMP;
+			break;
 		case Player2_LEFT:
 			keymask[1] |= KEY_LEFT;
 			break;
@@ -130,6 +142,12 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 			break;
 		case Player2_WEAPONLEFT:
 			keymask[1]|= KEY_WEAPONLEFT;
+			break;
+		case Player2_CHGRAV:
+			keymask[1]|= KEY_CHGRAV;
+			break;
+		case Player2_JUMP:
+			keymask[1]|= KEY_JUMP;
 			break;
 		}
 	}
@@ -159,6 +177,12 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 		case Player1_WEAPONLEFT:
 			keymask[0]&= ~KEY_WEAPONLEFT;
 			break;
+		case Player1_CHGRAV:
+			keymask[0]&= ~KEY_CHGRAV;
+			break;
+		case Player1_JUMP:
+			keymask[0]&= ~KEY_JUMP;
+			break;
 		case Player2_LEFT:
 			keymask[1] &= ~KEY_LEFT;
 			break;
@@ -179,6 +203,12 @@ public class MainPanel extends JPanel implements KeyListener, Runnable{
 			break;
 		case Player2_WEAPONLEFT:
 			keymask[1]&= ~KEY_WEAPONLEFT;
+			break;
+		case Player2_CHGRAV:
+			keymask[1]&= ~KEY_CHGRAV;
+			break;
+		case Player2_JUMP:
+			keymask[1]&= ~KEY_JUMP;
 			break;
 		}
 	}

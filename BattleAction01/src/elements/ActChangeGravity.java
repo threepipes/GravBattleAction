@@ -5,14 +5,15 @@ import main.KeyWords;
 public class ActChangeGravity extends Action{
 	public ActChangeGravity(int priority, ActiveElement parent) {
 		super(priority, parent, null, null);
-		// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼ãƒ»ã‚¹ã‚¿ãƒ–
 		name = KeyWords.CHANGEGRAV;
 	}
 	
 	@Override
 	public boolean action() {
-		if(parent.getGravDir() == 0)parent.changeGravityDirection(1);
-		else parent.changeGravityDirection(0);
+//		if(parent.getGravDir() == 0)parent.changeGravityDirection(1);
+//		else parent.changeGravityDirection(0);
+		parent.changeGravityDirection();
 		return true;
 		
 	}

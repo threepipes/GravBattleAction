@@ -26,7 +26,7 @@ public class Enemy extends ActiveElement{
 		defaultAC = new AttackCollision(x,y,sizex,sizey, stage);
 		attackCols.add(defaultAC);
 		loadAction();
-		// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼ãƒ»ã‚¹ã‚¿ãƒ–
 	}
 	
 	public Enemy(double x, double y, Map stage, int dx) {
@@ -38,7 +38,7 @@ public class Enemy extends ActiveElement{
 		defaultAC = new AttackCollision(x,y,sizex,sizey, stage);
 		attackCols.add(defaultAC);
 		loadAction();
-		// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãƒ¼ãƒ»ã‚¹ã‚¿ãƒ–
 	}
 	
 	public void loadAction(){
@@ -54,7 +54,7 @@ public class Enemy extends ActiveElement{
 	
 	@Override
 	public void draw(Graphics g, int offsetX, int offsetY) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸãƒ¡ã‚½ãƒƒãƒ‰ãƒ»ã‚¹ã‚¿ãƒ–
 		actions.doAction();
 		g.setColor(Color.RED);
 		if(isAlive)g.drawRect((int)x-offsetX, (int)y-offsetY, Size-1, Size-1);

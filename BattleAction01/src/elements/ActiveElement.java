@@ -36,13 +36,17 @@ public abstract class ActiveElement extends Element{
 
 	protected static final int LOOP = -1;
 	protected static final int END = -1;
+	protected int gravDir = 0;
+	
+	public double dbgVYAY;// TODO
 	
 	public ActiveElement(double x, double y, int sizex, int sizey, Map stage) {
 		super(x, y, sizex, sizey, stage);
 //		ax = 0.5;
 		ax = 0;
-		ay = 3;
-		maxlife = 10;
+		ay = 2;
+//		g = 3;
+		maxlife = 4;
 		life = maxlife;
 	}
 	
@@ -76,6 +80,14 @@ public abstract class ActiveElement extends Element{
 		return ay;
 	}
 	
+	public int getDX(){
+		return dx;
+	}
+
+	public int getDY(){
+		return dy;
+	}
+	
 	public boolean isGround(){
 		return onGround;
 	}
@@ -88,7 +100,7 @@ public abstract class ActiveElement extends Element{
 		isAlive = false;
 	}
 	
-	public void changeGravityDirection(int dir){
+	public void changeGravityDirection(){
 	}
 	public int getGravDir(){
 		return 0;
@@ -110,19 +122,51 @@ public abstract class ActiveElement extends Element{
 	
 	
 	public void move(){
-		if((ay > 0 && vy < 30)||(ay < 0 && vy > -30)) vy += ay;
-		if(Math.abs(vx) <= maxspeed){
-			vx += ax;
-			if(Math.abs(vx) > maxspeed) vx = maxspeed*dx;
-		}
-//		else if(vx != 0){
-//			int oldVX = (int)vx;
-//			vx += ax*dx;
-//			if(dx*vx < 0){
-//				vx = 0;
+//		if(ay > 0 && Math.abs(vy) <= maxspeed){
+//			vy += ay*dy + g;
+//			if(Math.abs(vy) > maxspeed) vy = maxspeed*dy;
+//		}else if(vy != 0){
+//			int oldVYsig = (int) Math.signum(vy);
+//			vy += ay*oldVYsig;
+//			if(oldVYsig*vy < 0){
+//				vy = 0;
 ////				ax = 0;
 //			}
 //		}
+		if(gravDir <= 1){
+			if((ay > 0 && vy < 28)||(ay < 0 && vy > -28)) vy += ay;
+			if(ax > 0 && Math.abs(vx) <= maxspeed){
+				vx += ax*dx;
+				if(Math.abs(vx) > maxspeed) vx = maxspeed*dx;
+			}else if(Math.abs(vx) > maxspeed){
+				vx -= 5*Math.signum(vx);
+				if(Math.abs(vx) < maxspeed) vx = maxspeed*dx;
+			}else if(vx != 0){
+				int oldVXsig = (int) Math.signum(vx);
+				vx += ax*oldVXsig;
+				if(oldVXsig*vx < 0){
+					vx = 0;
+					//				ax = 0;
+				}
+			}
+		}else{
+			if((ax > 0 && vx < 20)||(ax < 0 && vx > -20)) vx += ax;
+			if(ay > 0 && Math.abs(vy) <= maxspeed){
+				dbgVYAY = ay*dy;
+				vy += ay*dy;
+				if(Math.abs(vy) > maxspeed) vy = maxspeed*dy;
+			}else if(Math.abs(vy) > maxspeed){
+				vy -= 3*Math.signum(vy);
+				if(Math.abs(vy) < maxspeed) vy = maxspeed*Math.signum(vy);
+			}else if(vy != 0){
+				int oldVYsig = (int) Math.signum(vy);
+				vy += ay*oldVYsig;
+				if(oldVYsig*vy < 0){
+					vy = 0;
+					//				ax = 0;
+				}
+			}
+		}
 		oldVY = vy;
 		
 		double newX = x + vx;

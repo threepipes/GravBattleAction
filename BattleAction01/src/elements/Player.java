@@ -42,9 +42,12 @@ public class Player extends ActiveElement{
 	protected static final int GRAV_UP = 1;
 	protected static final int GRAV_RIGHT = 2;
 	protected static final int GRAV_LEFT = 3;
-	private int gravDir = GRAV_DOWN;
+//	private int gravDir = GRAV_DOWN;
 	private double oldAX;
 	private double oldAY;
+//	private int oldDX;
+//	private int oldDY;
+	private int oldKey;
 	
 	protected static final int KEY_RIGHT = 1;
 	protected static final int KEY_LEFT = 2;
@@ -53,6 +56,8 @@ public class Player extends ActiveElement{
 	protected static final int KEY_ATTACK = 16;
 	protected static final int KEY_WEAPONRIGHT = 32;
 	protected static final int KEY_WEAPONLEFT = 64;
+	protected static final int KEY_CHGRAV = 128;
+	protected static final int KEY_JUMP = 256;
 	
 	protected int color = 0;
 	protected int actmask = 0;
@@ -89,6 +94,7 @@ public class Player extends ActiveElement{
 		loadActions(/*filename*/);
 		createWeaponSet();
 		wp = wpMax;
+		gravDir = GRAV_DOWN;
 	}
 	
 	private void createWeaponSet(){
@@ -96,8 +102,8 @@ public class Player extends ActiveElement{
 		wpMap.put(KeyWords.GUN, 3);
 		weapon.add(KeyWords.FLOWERGUN);
 		wpMap.put(KeyWords.FLOWERGUN, 30);
-		weapon.add(KeyWords.CHANGEGRAV);
-		wpMap.put(KeyWords.CHANGEGRAV, 7);
+//		weapon.add(KeyWords.CHANGEGRAV);
+		wpMap.put(KeyWords.CHANGEGRAV, 4);
 	}
 	
 	public void setStageSize(Point p){
@@ -113,7 +119,7 @@ public class Player extends ActiveElement{
 		loadAction(acts,new ActJump(3, this, actmap[6], actmap[7]));
 		loadAction(acts,new ActGun(4, this, 3));
 		loadAction(acts,new ActFlowerGun(4, this, 1));
-		loadAction(acts,new ActChangeGravity(4, this));
+		loadAction(acts,new ActChangeGravity(5, this));
 		loadAction(acts,new ActSit(5, this, actmap[10], actmap[11], 12));
 		loadAction(acts,new ActLand(6, this, actmap[8], actmap[9]));
 		loadAction(acts,new ActDamage(7, this, actmap[12], actmap[13]));
@@ -142,10 +148,10 @@ public class Player extends ActiveElement{
 	}
 	
 	public boolean landed(){
-		if(!oldflag && onGround && oldVY >= 30) return true;
+		if(!oldflag && onGround && oldVY >= 21) return true;
 		oldflag = onGround;
 		return false;
-	}// 1ÉãÅ[ÉvÇ≈1âÒÇµÇ©åƒÇ—èoÇµÇƒÇÕÇ¢ÇØÇ»Ç¢
+	}// 1„É´„Éº„Éó„Åß1Âõû„Åó„ÅãÂëº„Å≥Âá∫„Åó„Å¶„ÅØ„ÅÑ„Åë„Å™„ÅÑ
 	
 
 	private void setOffset(){
@@ -178,26 +184,53 @@ public class Player extends ActiveElement{
 	
 	public void keyCheck(int keymask) {
 		actmask &= keymask;
-		
+		oldKey = keymask;
 
+
+		action(KeyWords.STAND);
 		if((keymask & KEY_LEFT) > 0 && (keymask & KEY_RIGHT) == 0){
 //			changeDir(-1);
 			dx = -1;
-			if(getVX() < -5)action(KeyWords.DASH);
-			else action(KeyWords.WALK);
+			if(gravDir <= 1){
+				if(getVX() < -5)action(KeyWords.DASH);	
+				else action(KeyWords.WALK);
+			}else{
+				action(KeyWords.STAND);
+			}
 		}
 		if((keymask & KEY_RIGHT) > 0){
 //			changeDir(1);
 			dx = 1;
-			if(getVX() > 5)action(KeyWords.DASH);
-			else action(KeyWords.WALK);
+			if(gravDir <= 1){
+				if(getVX() > 5)action(KeyWords.DASH);
+				else action(KeyWords.WALK);
+			}else{
+				action(KeyWords.STAND);
+			}
 		}
 		if((keymask & KEY_UP) > 0 && (~actmask & KEY_UP) > 0){
-			action(KeyWords.JUMP);
+			dy = -1;
+//			action(KeyWords.JUMP);
 			actmask |= KEY_UP;
+		}else if((gravDir > 1) && ((keymask & KEY_UP) > 0)){
+			if(getVY() > 5)action(KeyWords.DASH);
+			else action(KeyWords.WALK);
+
+		}
+		if((keymask & KEY_JUMP) > 0 && (~actmask & KEY_JUMP) > 0){
+			action(KeyWords.JUMP);
+			actmask |= KEY_JUMP;
 		}
 		if((keymask & KEY_DOWN) > 0 && (~actmask & KEY_DOWN) > 0){
+			dy = 1;
+			if(gravDir > 1){
+				if(getVY() > 5)action(KeyWords.DASH);
+				else action(KeyWords.WALK);
+			}
 			actmask |= KEY_DOWN;
+		}else if((gravDir > 1) && ((keymask & KEY_DOWN) > 0)){
+			if(getVY() > 5)action(KeyWords.DASH);
+			else action(KeyWords.WALK);
 		}
 		if((keymask & KEY_WEAPONRIGHT) > 0 && (~actmask & KEY_WEAPONRIGHT) > 0){
 			changeWeapon(true);
@@ -207,6 +240,10 @@ public class Player extends ActiveElement{
 			changeWeapon(false);
 			actmask |= KEY_WEAPONLEFT;
 		}
+		if((keymask & KEY_CHGRAV) > 0 && (~actmask & KEY_CHGRAV) > 0){
+			if(wp>0)action(KeyWords.CHANGEGRAV);
+			actmask |= KEY_CHGRAV;
+		}
 		if((keymask & KEY_ATTACK) > 0 && (~actmask & KEY_ATTACK) > 0){
 			if(wp>0)action(weapon.get(weaponNo));
 			actmask |= KEY_ATTACK;
@@ -215,14 +252,14 @@ public class Player extends ActiveElement{
 			action(KeyWords.STAND);
 			if(getVX() != 0) motionRequest(KeyWords.WALK);
 		}
-		// player Ç™attack ÇÃÇ›Ç»ÇÁÇŒÅCplayer ÇÕ stand
+		// player „Ååattack „ÅÆ„Åø„Å™„Çâ„Å∞Ôºåplayer „ÅØ stand
 
 		if(landed()){
 			action(KeyWords.LAND);
 		}else if(!isGround() && getVY() >= 4) 
 			motionRequest(KeyWords.JUMP);
 		if((keymask & KEY_DOWN) > 0){
-			action(KeyWords.SIT);
+			if(onGround)action(KeyWords.SIT);
 		}
 		
 	}
@@ -231,23 +268,46 @@ public class Player extends ActiveElement{
 		if(def){
 			ax = oldAX;
 			ay = oldAY;
+//			dx = oldDX;
+//			dy = oldDY;
 		}else{
 			oldAX = ax;
 			oldAY = ay;
+//			oldDX = dx;
+//			oldDY = dy;
 			if(gravDir == GRAV_UP){
 				ay = -ay;
 			}else if(gravDir == GRAV_RIGHT){
 				ax = ay;
-				ay = -oldAX;
+//				dx = -dy;
+				ay = oldAX;
+//				dy = oldDX;
 			}else if(gravDir == GRAV_LEFT){
 				ax = -ay;
+//				dx = dy;
 				ay = oldAX;
+//				dy = -oldDX;
 			}
 		}
 	}
 	
-	public void changeGravityDirection(int dir){
-		if(0 <= dir && dir <= 3) gravDir = dir;
+	public void changeGravityDirection(){
+//		if(0 <= dir && dir <= 3) gravDir = dir;
+		if(onGround || (oldKey & KEY_UP) > 0){
+			gravDir = 1;
+		}else if((oldKey & KEY_DOWN) > 0){
+			gravDir = 0;
+		}else if((oldKey & KEY_RIGHT) > 0){
+			gravDir = 2;
+		}else if((oldKey & KEY_LEFT) > 0){
+			gravDir = 3;
+		}else{
+			if(gravDir == 1){
+				gravDir = 0;
+			}else{
+				gravDir = 1;
+			}
+		}
 	}
 	
 	public int getGravDir(){
@@ -256,7 +316,7 @@ public class Player extends ActiveElement{
 	
 	
 	public void move(){
-		// ÇµÇ·Ç™ÇÒÇ≈è¨Ç≥Ç≠Ç»Ç¡ÇΩÉTÉCÉYÇñﬂÇ∑
+		// „Åó„ÇÉ„Åå„Çì„ÅßÂ∞è„Åï„Åè„Å™„Å£„Åü„Çµ„Ç§„Ç∫„ÇíÊàª„Åô
 		coly = 0;
 		colys = 24;
 		String act = actions.doAction();	Debug_Act = act;//TODO
@@ -272,9 +332,8 @@ public class Player extends ActiveElement{
 
 		setOffset();
 		setOffsetBG();
-		
-		if(act != null && act.equals(weapon.get(weaponNo))){
-			wp -= wpMap.get(weapon.get(weaponNo));
+		if(act != null && (act.equals(weapon.get(weaponNo)) || act.equals(KeyWords.CHANGEGRAV))){
+			wp -= wpMap.get(act);
 			if(wp <= -30) wp = -30;
 		}
 		if(wp<100){
@@ -287,9 +346,9 @@ public class Player extends ActiveElement{
 			if(vx < -5) vx = -5;
 		}
 		if(wp>0)maxspeed = 8;
-		if(maxlife/2<=life) wpRec = 0.1;
-		if(maxlife/4<=life && life < maxlife/2) wpRec = 0.2;
-		if(life < maxlife/4) wpRec = 0.5;
+		if(maxlife/2<life) wpRec = 0.1;
+		if(maxlife/4<life && life <= maxlife/2) wpRec = 0.2;
+		if(life <= maxlife/4) wpRec = 0.5;
 		
 		drawPoint = actions.getDrawPoint();
 	}
